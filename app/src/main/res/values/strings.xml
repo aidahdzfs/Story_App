@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Story App</string>
+    <string name="welcome_string">Selamat datang di StoryApp!</string>
+    <string name="title_login">Masukkan email dan passwordmu di bawah sini!</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="masuk">masuk</string>
+    <string name="signup_title">Belum punya akun? Lengkapi data dirimu terlebih dahulu ya</string>
+    <string name="daftar">daftar</string>
+    <string name="nama">nama</string>
+    <string name="invalid_password">password kurang dari 8 karakter</string>
+    <string name="data_kosong">data tidak boleh kosong</string>
+    <string name="camera">kamera</string>
+    <string name="gallery">galeri</string>
+    <string name="upload">Tambah</string>
+    <string name="hint_description">Tuliskan ceritamu disini</string>
+    <string name="create_story">Tambah Cerita</string>
+    <string name="invalid_login">gagal login</string>
+    <string name="create_account">Akun berhasil dibuat</string>
+    <string name="invalid_email">Email tidak valid</string>
+    <string name="logout">keluar</string>
+</resources>
