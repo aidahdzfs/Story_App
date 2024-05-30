@@ -19,4 +19,6 @@
     <string name="create_account">Akun berhasil dibuat</string>
     <string name="invalid_email">Email tidak valid</string>
     <string name="logout">keluar</string>
+    <string name="maps">Maps</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

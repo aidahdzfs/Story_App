@@ -7,6 +7,7 @@ import com.bangkit.storyapp.data.di.Injection
 import com.bangkit.storyapp.data.repository.StoryRepository
 import com.bangkit.storyapp.view.login.LoginViewModel
 import com.bangkit.storyapp.view.main.MainViewModel
+import com.bangkit.storyapp.view.maps.MapsViewModel
 import com.bangkit.storyapp.view.newstory.NewStoryViewModel
 import com.bangkit.storyapp.view.register.RegisterViewModel
 
@@ -18,6 +19,7 @@ class ViewModelFactory(private val repository: StoryRepository) : ViewModelProvi
             modelClass.isAssignableFrom(MainViewModel::class.java) -> MainViewModel(repository)
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> LoginViewModel(repository)
             modelClass.isAssignableFrom(NewStoryViewModel::class.java) -> NewStoryViewModel(repository)
+            modelClass.isAssignableFrom(MapsViewModel::class.java) -> MapsViewModel(repository)
             else -> throw IllegalArgumentException("unknowen ViewModel: ${modelClass.name}")
         }
         @Suppress("UNCHECKED_CAST")

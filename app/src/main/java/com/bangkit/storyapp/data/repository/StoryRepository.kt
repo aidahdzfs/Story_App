@@ -27,6 +27,9 @@ class StoryRepository private constructor(
 
     private val _storyList = MutableLiveData<List<ListStoryItem>>()
     val storyList: MutableLiveData<List<ListStoryItem>> = _storyList
+
+    private val _locationStoryList = MutableLiveData<List<ListStoryItem>>()
+    val locationStoryList: MutableLiveData<List<ListStoryItem>> = _locationStoryList
     
     private val _uploadStory = MutableLiveData<StoryUploadResponse>()
     val uploadStory: MutableLiveData<StoryUploadResponse> = _uploadStory
@@ -109,6 +112,25 @@ class StoryRepository private constructor(
 
             override fun onFailure(call: Call<StoryUploadResponse>, t: Throwable) {
                 _isLoading.value = true
+                Log.e(TAG, "onFailure: ${t.message}", )
+            }
+
+        })
+    }
+
+    fun getStoriesLocation(){
+        _isLoading.value = true
+        apiService.getStoriesLocation().enqueue(object : Callback<StoryResponse>{
+            override fun onResponse(call: Call<StoryResponse>, response: Response<StoryResponse>) {
+                _isLoading.value = false
+                if (response.isSuccessful){
+                    _storyList.value = response.body()?.listStory
+                } else {
+                    Log.e(TAG, "onResponse: ${response.message()}", )
+                }
+            }
+
+            override fun onFailure(call: Call<StoryResponse>, t: Throwable) {
                 Log.e(TAG, "onFailure: ${t.message}", )
             }
 

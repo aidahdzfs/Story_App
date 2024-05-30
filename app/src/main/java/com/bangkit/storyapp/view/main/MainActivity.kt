@@ -14,6 +14,7 @@ import com.bangkit.storyapp.data.api.response.ListStoryItem
 import com.bangkit.storyapp.databinding.ActivityMainBinding
 import com.bangkit.storyapp.view.ViewModelFactory
 import com.bangkit.storyapp.view.main.adapter.StoryAdapter
+import com.bangkit.storyapp.view.maps.MapsActivity
 import com.bangkit.storyapp.view.newstory.NewStoryActivity
 import com.bangkit.storyapp.view.welcome.WelcomeActivity
 import kotlinx.coroutines.launch
@@ -64,6 +65,10 @@ class MainActivity : AppCompatActivity() {
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         finish()
                     }
+                    true
+                }
+                R.id.maps -> {
+                    startActivity(Intent(this@MainActivity, MapsActivity::class.java))
                     true
                 }
                 else -> false
