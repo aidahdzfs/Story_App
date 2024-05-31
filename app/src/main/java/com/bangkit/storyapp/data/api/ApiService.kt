@@ -1,6 +1,5 @@
 package com.bangkit.storyapp.data.api
 
-import com.bangkit.storyapp.data.api.response.ListStoryItem
 import com.bangkit.storyapp.data.api.response.LoginResponse
 import com.bangkit.storyapp.data.api.response.RegisterResponse
 import com.bangkit.storyapp.data.api.response.StoryResponse

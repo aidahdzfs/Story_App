@@ -22,8 +22,6 @@ class StoryAdapter: PagingDataAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DI
         return ViewHolder(binding)
     }
 
-//    override fun getItemCount() = listStory.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val story = getItem(position)
 
@@ -52,7 +50,7 @@ class StoryAdapter: PagingDataAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DI
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>(){
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>(){
             override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
                 return oldItem == newItem
             }

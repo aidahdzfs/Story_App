@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bangkit.storyapp.R
-import com.bangkit.storyapp.data.api.response.ListStoryItem
 import com.bangkit.storyapp.databinding.ActivityMainBinding
 import com.bangkit.storyapp.view.ViewModelFactory
 import com.bangkit.storyapp.view.main.adapter.StoryAdapter
@@ -23,19 +22,25 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val mainViewModel by viewModels<MainViewModel> { ViewModelFactory.getInstance(this) }
+    private lateinit var adapter: StoryAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        showLoading(false)
+        adapter = StoryAdapter()
         if (applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             binding.recycleView.layoutManager = GridLayoutManager(this, 2)
         } else {
             binding.recycleView.layoutManager = LinearLayoutManager(this)
         }
 
+        setAppBar()
+        showLoading(false)
+        setView()
+    }
+
+    private fun setView(){
         binding.fabNewStory.setOnClickListener {
             val intent = Intent(this@MainActivity, NewStoryActivity::class.java)
             startActivity(intent)
@@ -53,7 +58,8 @@ class MainActivity : AppCompatActivity() {
                 setStory()
             }
         }
-
+    }
+    private fun setAppBar(){
         binding.topAppBar.setOnMenuItemClickListener{
             when(it.itemId){
                 R.id.logout -> {
@@ -75,7 +81,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setStory(){
-        val adapter = StoryAdapter()
         binding.recycleView.adapter = adapter
         mainViewModel.getStory.observe(this@MainActivity){
             adapter.submitData(lifecycle, it)
@@ -92,6 +97,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        setStory()
+        if (!adapter.snapshot().isEmpty()){
+            adapter.refresh()
+            lifecycleScope.launch {
+                adapter.loadStateFlow
+                    .collect{
+                        binding.recycleView.smoothScrollToPosition(0)
+                    }
+            }
+        }
     }
 }

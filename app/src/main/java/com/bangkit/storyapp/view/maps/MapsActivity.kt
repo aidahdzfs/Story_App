@@ -1,7 +1,9 @@
 package com.bangkit.storyapp.view.maps
 
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import com.bangkit.storyapp.R
 
@@ -15,6 +17,7 @@ import com.bangkit.storyapp.databinding.ActivityMapsBinding
 import com.bangkit.storyapp.view.ViewModelFactory
 import com.bangkit.storyapp.view.main.MainViewModel
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MapStyleOptions
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -41,11 +44,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isCompassEnabled = true
 
         addManyMarker()
+        setMapStyle()
         val indonesia = LatLng(0.7893, 113.9213)
         mMap.moveCamera(CameraUpdateFactory.newLatLng(indonesia))
     }
 
-//    private val boundsBuilder = LatLngBounds.Builder()
     private fun addManyMarker() {
         mapsViewModel.getStoryLocation().observe(this){
             it.forEach { loc ->
@@ -56,18 +59,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         .title(loc.name)
                         .snippet(loc.description)
                 )
-//                boundsBuilder.include(latLng)
             }
         }
+    }
 
-//        val bounds: LatLngBounds = boundsBuilder.build()
-//        mMap.animateCamera(
-//            CameraUpdateFactory.newLatLngBounds(
-//                bounds,
-//                resources.displayMetrics.widthPixels,
-//                resources.displayMetrics.heightPixels,
-//                300
-//            )
-//        )
+    private fun setMapStyle() {
+        try {
+            val success =
+                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.")
+            }
+        } catch (exception: Resources.NotFoundException) {
+            Log.e(TAG, "Can't find style. Error: ", exception)
+        }
+    }
+
+    companion object {
+        private const val TAG = "MapsActivity"
     }
 }

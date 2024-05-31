@@ -9,7 +9,6 @@ import com.bangkit.storyapp.data.repository.StoryRepository
 
 class LoginViewModel(private val storyRepository: StoryRepository) : ViewModel(){
     val loginResult: LiveData<LoginResponse> = storyRepository.loginResult
-
     val isLoading: LiveData<Boolean> = storyRepository.isLoading
 
     fun login(email: String, pass: String){

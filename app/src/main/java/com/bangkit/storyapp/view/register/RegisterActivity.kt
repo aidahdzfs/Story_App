@@ -34,6 +34,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun btnRegister() {
         binding.btnSignup.setOnClickListener {
+            showLoading(true)
             val name = binding.edtName.text.toString().trim()
             val email = binding.edtEmail.text.toString().trim()
             val pass = binding.edtPassword.text.toString().trim()
@@ -52,6 +53,7 @@ class RegisterActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 try {
+                    showLoading(false)
                     registerViewModel.register(name, email, pass)
                     Toast.makeText(this@RegisterActivity,
                         getString(R.string.create_account), Toast.LENGTH_SHORT).show()
@@ -61,6 +63,7 @@ class RegisterActivity : AppCompatActivity() {
                     finish()
 
                 } catch (e: HttpException) {
+                    showLoading(false)
                     val errorBody = e.response()?.errorBody()?.string()
                     val errorResponse = Gson().fromJson(errorBody, RegisterResponse::class.java)
                     Log.d(TAG, "btnRegister: ${errorResponse.message}")

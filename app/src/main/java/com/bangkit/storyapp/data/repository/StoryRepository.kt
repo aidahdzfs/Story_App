@@ -39,8 +39,6 @@ class StoryRepository private constructor(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-
-
     suspend fun register(name: String, email: String, pass: String): RegisterResponse{
         return apiService.register(name, email, pass)
     }
@@ -77,7 +75,6 @@ class StoryRepository private constructor(
         userPreference.logout()
     }
 
-//
     fun getStory(): LiveData<PagingData<ListStoryItem>>{
         return Pager(
             config = PagingConfig(
