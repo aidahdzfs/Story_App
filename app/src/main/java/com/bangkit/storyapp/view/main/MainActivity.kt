@@ -50,9 +50,7 @@ class MainActivity : AppCompatActivity() {
                 mainViewModel.isLoading.observe(this){
                     showLoading(it)
                 }
-                mainViewModel.getStory().observe(this) {
-                    setStory(it)
-                }
+                setStory()
             }
         }
 
@@ -76,9 +74,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setStory(listStory: List<ListStoryItem>){
-        val adapter = StoryAdapter(listStory)
+    private fun setStory(){
+        val adapter = StoryAdapter()
         binding.recycleView.adapter = adapter
+        mainViewModel.getStory.observe(this@MainActivity){
+            adapter.submitData(lifecycle, it)
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -91,8 +92,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        mainViewModel.getStory().observe(this){
-            setStory(it)
-        }
+        setStory()
     }
 }

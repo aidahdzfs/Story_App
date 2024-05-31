@@ -3,6 +3,11 @@ package com.bangkit.storyapp.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
+import com.bangkit.storyapp.data.StoryPagingSource
 import com.bangkit.storyapp.data.api.ApiService
 import com.bangkit.storyapp.data.api.response.ListStoryItem
 import com.bangkit.storyapp.data.api.response.LoginResponse
@@ -27,9 +32,6 @@ class StoryRepository private constructor(
 
     private val _storyList = MutableLiveData<List<ListStoryItem>>()
     val storyList: MutableLiveData<List<ListStoryItem>> = _storyList
-
-    private val _locationStoryList = MutableLiveData<List<ListStoryItem>>()
-    val locationStoryList: MutableLiveData<List<ListStoryItem>> = _locationStoryList
     
     private val _uploadStory = MutableLiveData<StoryUploadResponse>()
     val uploadStory: MutableLiveData<StoryUploadResponse> = _uploadStory
@@ -75,24 +77,16 @@ class StoryRepository private constructor(
         userPreference.logout()
     }
 
-    fun getStory(){
-        _isLoading.value = true
-        apiService.getStories().enqueue(object : Callback<StoryResponse>{
-            override fun onResponse(call: Call<StoryResponse>, response: Response<StoryResponse>) {
-                _isLoading.value = false
-                if (response.isSuccessful){
-                    _storyList.value = response.body()?.listStory
-                } else {
-                    Log.e(TAG, "onResponse: ${response.message()}", )
-                }
+//
+    fun getStory(): LiveData<PagingData<ListStoryItem>>{
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource(apiService)
             }
-
-            override fun onFailure(call: Call<StoryResponse>, t: Throwable) {
-                _isLoading.value = true
-                Log.e(TAG, "onFailure: ${t.message.toString()}", )
-            }
-
-        })
+        ).liveData
     }
 
     fun postStory(img: MultipartBody.Part, desc: RequestBody){

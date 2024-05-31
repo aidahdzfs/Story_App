@@ -3,6 +3,9 @@ package com.bangkit.storyapp.view.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.bangkit.storyapp.data.api.response.ListStoryItem
 import com.bangkit.storyapp.data.preference.UserModel
 import com.bangkit.storyapp.data.repository.StoryRepository
@@ -17,8 +20,7 @@ class MainViewModel(private val storyRepository: StoryRepository): ViewModel() {
         return storyRepository.getSession().asLiveData()
     }
 
-    fun getStory(): LiveData<List<ListStoryItem>> {
-        storyRepository.getStory()
-        return storyRepository.storyList
-    }
+    val getStory: LiveData<PagingData<ListStoryItem>> =
+        storyRepository.getStory().cachedIn(viewModelScope)
+
 }

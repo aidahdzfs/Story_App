@@ -1,5 +1,6 @@
 package com.bangkit.storyapp.data.api
 
+import com.bangkit.storyapp.data.api.response.ListStoryItem
 import com.bangkit.storyapp.data.api.response.LoginResponse
 import com.bangkit.storyapp.data.api.response.RegisterResponse
 import com.bangkit.storyapp.data.api.response.StoryResponse
@@ -32,10 +33,10 @@ interface ApiService {
     ): Call<LoginResponse>
 
     @GET("stories")
-    fun getStories(
+    suspend fun getStories(
         @Query("page") page: Int = 1,
         @Query("size") size: Int = 20
-    ): Call<StoryResponse>
+    ): StoryResponse
 
     @Multipart
     @POST("stories")
