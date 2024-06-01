@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bangkit.storyapp.R
 import com.bangkit.storyapp.databinding.ActivityMainBinding
 import com.bangkit.storyapp.view.ViewModelFactory
+import com.bangkit.storyapp.view.main.adapter.LoadingStateAdapter
 import com.bangkit.storyapp.view.main.adapter.StoryAdapter
 import com.bangkit.storyapp.view.maps.MapsActivity
 import com.bangkit.storyapp.view.newstory.NewStoryActivity
@@ -81,7 +82,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setStory(){
-        binding.recycleView.adapter = adapter
+        binding.recycleView.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter { adapter.retry() }
+        )
         mainViewModel.getStory.observe(this@MainActivity){
             adapter.submitData(lifecycle, it)
         }
@@ -102,7 +105,7 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 adapter.loadStateFlow
                     .collect{
-                        binding.recycleView.smoothScrollToPosition(0)
+                        binding.recycleView.stopScroll()
                     }
             }
         }
